@@ -3,6 +3,7 @@
 #include "Drawer.h"
 #include "Point.h"
 #include "InputManager.h"
+#include "Values.h"
 
 #pragma once
 class Game
@@ -10,16 +11,18 @@ class Game
 public:
 	void Start();
 
-	bool IsGameEnded = false;
+	bool isGameEnded = false;
 	int width = 10, height = 10;
 private:
 	void Update();
 	void CheckForGameEnd();
 	void EndGame();
+	void FreeMemory();
 
-	char **field;
-	Generation generation;
-	Player player;
-	Drawer drawer;
-	InputManager inputManager;
+	char** field;
+	char** drawableField;
+	Generation * generation = new Generation();
+	Player* player = new Player();
+	Drawer *  drawer = new Drawer();
+	InputManager * inputManager = new InputManager();
 };

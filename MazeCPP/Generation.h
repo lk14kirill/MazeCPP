@@ -1,13 +1,16 @@
 #include <cstdlib>
+#include "Values.h"
 
 #pragma once
 class Generation
 {
 public:
-	char ** GenerateField(int,int,int);
-	void FreeArray(char**, int, int);
-	void SetExit(char**,int,int,char);
+	char ** GenerateArray(int width, int height);
+	char ** GenerateField(int width, int height,int wallPercentage);
+	char ** GenerateFilledField(int width, int height, char symbol);
+	void CopyFieldToField(char** from, char** to,int width,int height);
+	void FreeArray(char** field, int width, int height);
+	void SetExit(char** field,int width,int height,char exitSymbol);
 private:
-	char** GenerateArray(int, int);
 };
 

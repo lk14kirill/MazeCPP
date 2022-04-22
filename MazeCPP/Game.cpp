@@ -2,17 +2,16 @@
 #include <iostream>;
 using namespace std;
 
-char ** field;
-bool isGameEnded;
-int width, height;
 void Game::Start()
 {
 	srand(time(0));
 	cout << "The game was started." << endl;
-	field = generation.GenerateField(width, height, 24);
-    player.PlacePlayerRandomly(field, width, height);
-	generation.SetExit(field, width, height, player.playerSymbol);
-	drawer.Draw(field,width,height);
+	field = generation->GenerateField(width, height, 24);
+	drawableField = generation->GenerateFilledField(width+1, height+1,borderSymbol);
+    player->PlacePlayerRandomly(field, width, height);
+	generation->SetExit(field, width, height, playerSymbol);
+	generation->CopyFieldToField(field, drawableField, width, height);
+	drawer->Draw(drawableField,width+1,height+1);
 	Update();
 }
 
@@ -20,23 +19,30 @@ void Game::Update()
 {
 	while(isGameEnded==0)
 	{
-		char key;
-		cin >> key;
-		Vector2 direction = inputManager.GetDirection(key);
-		player.TryToMove(direction, field,width,height);
-		drawer.Draw(field, width, height);
+		Vector2 direction = inputManager->GetDirection();
+		player->TryToMove(direction, field,width,height);
+		generation->CopyFieldToField(field, drawableField, width, height);
+		drawer->Draw(drawableField, width+1, height+1);
 		CheckForGameEnd();
 	}
 	EndGame();
 }
 void Game::CheckForGameEnd()
 {
-	if (player.foundExit)
+	if (player->foundExit)
 		isGameEnded = true;
 }
 void  Game::EndGame()
 {
-	generation.FreeArray(field, width, height);
+}
+void Game::FreeMemory()
+{
+	generation->FreeArray(field, width, height);
+	generation->FreeArray(drawableField, width, height);
+	delete generation;
+	delete player;
+	delete drawer;
+	delete inputManager;
 }
 
 

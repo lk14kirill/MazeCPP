@@ -5,6 +5,6 @@ using namespace std;
 class Drawer
 {
 public:
-	void Draw(char**,int,int);
+	void Draw(char** field,int width,int height);
 };
 

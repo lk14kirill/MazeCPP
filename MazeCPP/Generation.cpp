@@ -7,9 +7,21 @@ char ** Generation::GenerateField(int width,int height,int wallsPercentage)
 		for(int j=0;j<height;j++)
 		{
 			if(rand() % 100 <wallsPercentage)
-			field[i][j] = '#';
+			field[i][j] = wallSymbol;
 			else
-			field[i][j] = '.';
+			field[i][j] = freeCellSymbol;
+		}
+	}
+	return field;
+}
+char** Generation::GenerateFilledField(int width,int height,char fillSymbol)
+{
+	char** field = GenerateArray(width, height);
+	for (int x = 0; x < width; x++)
+	{
+		for (int y = 0; y < height; y++)
+		{
+				field[y][x] = fillSymbol;
 		}
 	}
 	return field;
@@ -22,11 +34,9 @@ void Generation::SetExit(char** field,int width,int height,char playerSymbol)
 	 int y = rand() % height;
 	 if(field[y][x] != playerSymbol)
 	 {
-	  field[y][x] = '!';
+	  field[y][x] = exitSymbol;
 	  return;
 	 }
-	
-	
 	}
 }
 char** Generation::GenerateArray(int width, int height)
@@ -45,4 +55,15 @@ void Generation::FreeArray(char** field,int width,int height)
 		delete[] field[i];
 	}
 	delete[] field;
+}
+void Generation::CopyFieldToField(char ** from,char ** to,int width,int height)
+{
+	char** field = GenerateArray(width, height);
+	for (int x = 0; x < width; x++)
+	{
+		for (int y = 0; y < height; y++)
+		{
+			to[y][x] = from[y][x];
+		}
+	}
 }
